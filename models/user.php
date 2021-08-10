@@ -11,6 +11,10 @@ class UserModel extends Model
         }
 
         if (isset($post['submit'])) {
+            if ($post['name'] == '' || $post['email'] == '' || $post['password'] == '') {
+                Messages::setMsg('Please, fill in all fields', 'error');
+                return;
+            }
             $this->query('INSERT INTO users (name, email, password) VALUES(:name, :email, :password)');
             $this->bind(':name', $post['name']);
             $this->bind(':email', $post['email']);
@@ -48,7 +52,7 @@ class UserModel extends Model
                 );
                 header('Location: ' . ROOT_URL . 'shares');
             } else {
-                echo 'Incorrect Log';
+                Messages::setMsg('Incorrect Login', 'error');
             }
         }
         return;
